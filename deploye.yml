@@ -1,0 +1,32 @@
+---
+
+- name: install apache2 and clone ecomm app
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: install apache2
+    apt:
+
+      name: apache2
+      state: present
+
+  - name: started apache
+    service:
+
+      name: apache2
+      state: started
+      enabled: yes
+
+  - name: Remove existing /var/www/html directory if it exists (on agent node)
+    file:
+      
+      path: /var/www/html
+      state: absent
+
+  - name: clone application ecomm
+    git:
+
+      repo: https://github.com/raman8284/ecomm.git
+      dest: /var/www/html
+
